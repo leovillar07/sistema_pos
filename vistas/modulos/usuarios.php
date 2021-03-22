@@ -33,49 +33,48 @@
 
           <tbody>
 
-          <tr>
-            <td>1</td>
-            <td>Leonardo Villar</td>
-            <td>leorvr</td>
-            <td><img src="vistas/img/usuarios/default/anonymous.png" alt="Foto usuario" class="img-thumbnail"
-                     style="width: 30px;"></td>
-            <td>Administrador</td>
-            <td>
-              <button class="btn btn-success btn-xs">Habilitado</button>
-            </td>
-            <td>15-03-2021</td>
-            <td class="text-center btn-group">
-              <button class="btn btn-sm btn-warning" style="width: 40px;"><i class="fa fa-edit"></i></button>
-              <button class="btn btn-sm btn-danger" style="width: 40px;"><i class=" fa fa-trash
-              "></i></button>
-            </td>
-          </tr>
+          <?php
 
-          <tr>
-            <td>1</td>
-            <td>Alisson Martinez</td>
-            <td>ali19</td>
-            <td><img src="vistas/img/usuarios/default/anonymous.png" alt="Foto usuario" class="img-thumbnail"
-                     style="width: 30px;"></td>
-            <td>Docente</td>
-            <td>
-              <button class="btn btn-success btn-xs">Habilitado</button>
-            </td>
-            <td>16-03-2021</td>
-            <td class="text-center btn-group">
-              <button class="btn btn-sm btn-warning" style="width: 40px;"><i class="fa fa-edit"></i></button>
-              <button class="btn btn-sm btn-danger" style="width: 40px;"><i class=" fa fa-trash
-              "></i></button>
-            </td>
-          </tr>
+          $item = null;
+          $valor = null;
+
+          $usuarios = UsuarioControlador::ctrMostrarUsuarios($item, $valor);
+
+          foreach ($usuarios as $key => $usuario) {
+            echo "
+              <tr>
+                <td>" . ($key + 1) . "</td>
+                <td>" . $usuario['nombre'] . "</td>
+                <td>" . $usuario['usuario'] . "</td>";
+
+            if ($usuario["foto"] != "") {
+              echo '<td><img src="' . $usuario['foto'] . '" alt="imagen usuario" class="user-image" style="width: 40px"></td>';
+            } else {
+              echo '<td><img src="vistas/img/usuarios/default/anonymous.png" alt="imagen usuario" class="user-image"></td>';
+            }
+
+            echo "
+                <td>" . $usuario['perfil'] . "</td>";
+
+            if ($usuario["estado"] != 0) {
+              echo '<td><button class="btn btn-success btn-xs btnActivar" idUsuario="' . $usuario["id"] . '" estadoUsuario="0">Activado</button></td>';
+            } else {
+              echo '<td><button class="btn btn-danger btn-xs btnActivar" idUsuario="' . $usuario["id"] . '" estadoUsuario="1">Desactivado</button></td>';
+            }
+            echo "<td>" . $usuario['fecha'] . "</td>
+                <td>
+                    <div class='btn-group'>
+                      <button class='btn btn-warning btnEditarUsuario' idUsuario= '" . $usuario["id"] . "' data-toggle='modal' data-target='#modalEditarUsuario'><i class='fa fa-pencil'></i></button>
+                      <button class='btn btn-danger btnEliminarUsuario' idUsuario='" . $usuario["id"] . "' fotoUsuario='" . $usuario["foto"] . "' usuario='" . $usuario["usuario"] . "'><i class='fa fa-trash'></i></button>
+                    </div>  
+                  </td>
+              </tr>";
+          }
+          ?>
 
           </tbody>
         </table>
 
-      </div>
-
-      <div class="box-footer">
-        Footer
       </div>
 
     </div>
@@ -83,7 +82,7 @@
   </section>
 </div>
 
-
 <?php
 
 include "vistas/modales/usuario/agregarUsuario.modal.php";
+include "vistas/modales/usuario/editarUsuario.modal.php";
